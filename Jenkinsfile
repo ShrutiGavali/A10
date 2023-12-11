@@ -1,40 +1,28 @@
 pipeline {
     agent any
 
-    environment {
-        // Define environment variables if needed
-        DOCKER_HUB_CREDENTIALS = '81664a55-165b-433d-a689-55741ca0b120'
-        DOCKER_IMAGE_NAME = 'shrutigavali/java1-docker'
-        DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
-    }
-
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                // Checkout the source code from the Git repository
-                checkout scm
+                // Checkout source code from GitHub
+                checkout([$class: 'Git', branches: [[name: '*/main']], 
+                          userRemoteConfigs: [[url: 'https://github.com/yourusername/your-repo.git']]])
+
+                // Build Docker image
+                script {
+                    def dockerImage = docker.build('java1-docker:latest', '-f Dockerfile .')
+                }
             }
         }
-
-        stage('Build and Push Docker Image') {
+        stage('Push') {
             steps {
+                // Push Docker image to Docker Hub (change as per your registry)
                 script {
-                    // Build the Docker image
-                    def dockerImage = docker.build("${DOCKER_IMAGE_TAG}")
-
-                    // Authenticate with Docker Hub
-                    docker.withRegistry('https://registry.hub.docker.com', "${DOCKER_HUB_CREDENTIALS}") {
-                        // Push the Docker image to Docker Hub
+                    docker.withRegistry('https://registry.example.com', 'docker-credentials-shrutigavali') {
                         dockerImage.push()
                     }
                 }
             }
-        }
-    }
-
-    post {
-        success {
-            echo "Docker image built and pushed successfully"
         }
     }
 }
