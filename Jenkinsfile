@@ -6,7 +6,7 @@ pipeline {
             steps {
                 // Checkout source code from GitHub
                 checkout([$class: 'Git', branches: [[name: '*/main']], 
-                          userRemoteConfigs: [[url: 'https://github.com/yourusername/your-repo.git']]])
+                          userRemoteConfigs: [[url: 'https://github.com/ShrutiGavali/A10.git']]])
 
                 // Build Docker image
                 script {
