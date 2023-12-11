@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Define environment variables if needed
         DOCKER_HUB_CREDENTIALS = '81664a55-165b-433d-a689-55741ca0b120'
-        DOCKER_IMAGE_NAME = 'shrutigavali/jenkin_java_app'
+        DOCKER_IMAGE_NAME = 'shrutigavali/docker_java_app'
         DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
     }
 
